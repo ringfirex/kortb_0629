@@ -119,7 +119,15 @@
       <option name="project" value="LOCAL" />
       <updated>1719831304252</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="5단계 : 목록 완료">
+      <option name="closed" value="true" />
+      <created>1719834537331</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1719834537331</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
