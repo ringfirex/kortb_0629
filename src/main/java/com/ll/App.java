@@ -4,76 +4,72 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-//- 5단계 : 목록
-//== 명언 앱 ==
-//명령) 등록
-//명언 : 현재를 사랑하라.
-//작가 : 작자미상
-//1번 명언이 등록되었습니다.
-//명령) 등록
-//명언 : 과거에 집착하지 마라.
-//작가 : 작자미상
-//2번 명언이 등록되었습니다.
-//명령) 목록
-//번호 / 작가 / 명언
-//----------------------
-//2 / 작자미상 / 과거에 집착하지 마라.
-//1 / 작자미상 / 현재를 사랑하라.
-//명령) 종료
-
 class App {
+    Scanner scanner;
+    int lastQuotatinId;
+    List<Quotation> quotations;
+
+    App() {
+        scanner = new Scanner(System.in);
+        lastQuotatinId = 0;
+        quotations = new ArrayList<>();
+    }
+
     void run() {
-        Scanner sc = new Scanner(System.in);
-        String strcmd;
-        int num = 0;
-
-        // 저장하기 위하여
-        List<String> list1 = new ArrayList<>();
-        List<String> list2 = new ArrayList<>();
-
+        System.out.println("프로그램 실행");
         System.out.println("== 명언 앱 ==");
+
 
         while (true) {
             System.out.print("명령) ");
-            strcmd = sc.nextLine();
 
-            if (strcmd.equals("등록")) {
-                num++;
+            String cmd = scanner.nextLine().trim(); // 명령어 입력 시에 공백 제거
 
-                System.out.print("명언 : ");
-                String str1 = new String(sc.nextLine());
-
-                System.out.print("작가 : ");
-                String str2 = new String(sc.nextLine());
-
-                list1.add(str1);
-                list2.add(str2);
-
-                System.out.println(num + "번 명언이 등록되었습니다.");
-
-                strcmd = "";
-                continue;
-            }
-
-            if (strcmd.equals("목록")) {
-                System.out.println("번호 / 작가 / 명언");
-                System.out.println("--------------------------------------");
-
-                for (int i = 0; i < list1.size(); i++) {
-                    System.out.print((i + 1) + " / ");
-                    System.out.print(list2.get(i) + " / ");
-                    System.out.print(list1.get(i));
-                    System.out.println();
-                }
-
-                System.out.println("======================================");
-            }
-
-            if (strcmd.equals("종료")) {
+            if (cmd.equals("종료")) {
                 break;
+            } else if (cmd.equals("등록")) {
+                actionWrite();
+                System.out.printf("%d번 명언이 등록되었습니다.\n", lastQuotatinId);
+
+            } else if (cmd.equals("목록")) {
+                actionList();
+            } else if (cmd.startsWith("삭제?")) { // "삭제?"로 시작 하는지 삭제?id=1
+                actionRemove(cmd);
             }
         }
+    }
 
+    void actionWrite() { // 등록
+        System.out.print("명언 : ");
+        String content = scanner.nextLine().trim(); // 명언 입력 시 공백 제거
 
+        System.out.print("작가 : ");
+        String authorName = scanner.nextLine().trim();// 작가 입력 시 공백 제거
+
+        lastQuotatinId++;
+
+        int id = lastQuotatinId;
+
+        Quotation quotation = new Quotation(id, content, authorName);
+        quotations.add(quotation);
+    }
+
+    void actionList() { // 목록
+        System.out.println("번호 / 작가 / 명언");
+        System.out.println("-----------------------");
+
+        if (quotations.isEmpty()) {
+            System.out.println("등록된 명언이 없습니다.");
+        }
+        for (int i = quotations.size() - 1; i >= 0; i--) {
+            Quotation quotation = quotations.get(i);
+            System.out.printf("%d / %s/ %s\n", quotation.id, quotation.authorName, quotation.content);
+        }
+    }
+    void actionRemove(String cmd) {
+        String idStr = cmd.replace("삭제?id=", ""); //"삭제?id=1"를 제거하고 id 부분만  "1"
+        int id = Integer.parseInt(idStr); // 추출한 id 문자열을 정수로 변환.
+
+        System.out.printf("%d번 명언을 삭제합니다\n",id);
     }
 }
